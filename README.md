@@ -15,7 +15,7 @@ ___
 ## Installation
 ```bash
 git clone https://github.com/YOUR_USERNAME/moabb_dataset_iva.git
-cd moabb_dataset_iva
+cd datasets
 pip install -e .
 ```
 
