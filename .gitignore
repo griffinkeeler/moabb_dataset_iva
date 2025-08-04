@@ -1,0 +1,40 @@
+# Byte-compiled / optimized / DLL files
+__pychache__/
+*.py[cod]
+*$py.class
+
+# Virtual enviornments
+.venv/
+env/
+venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# PyCharm project settings
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Testing cache
+.cache/
+*.log
+
+# matplotlib / plot outputs
+*.png
+*.svg
+
+# MNE-related files
+mne-python-data/
+mne_data
+
+# Output / build folders
+dist/
+build/
+*.eeg-info/
+
+# Personal configuartion
+*.env
+.env.*
