@@ -1,15 +1,15 @@
 # MOABB Project: BCI Competition III Dataset IVa
-___
+
 A custom MOABB-compatible dataset loader for BCI Competition III dataset IVa.
 
 ## Overview 
-___
+
 This project aims to add the BCI competition III dataset IVa as a subclass
 to the Mother of All BCI Benchmarks (MOABB), enabling easy integration
 with EEG classification pipelines. 
 
 ## Features
-___
+
 - Compatible with MOABB's get_data() API
 
 ## Installation
@@ -20,7 +20,7 @@ pip install -e .
 ```
 
 ## Dataset Description
-___
+
 | Property           | Value                     | Explanation                                                             |
 |--------------------|---------------------------|-------------------------------------------------------------------------|
 | Dataset            | BCI Competition III - IVa | Official dataset name                                                   |
@@ -35,15 +35,15 @@ ___
 | Runs               | 1                         | Data recorded as one continuous run                                     |
 
 ## To Do
-___
+
 - Add support for other BCI Competition III datasets
 
 ## Contributing
-___
+
 Pull requests are welcome.
 
 ## References
-___
+
 - Guido Dornhege, Benjamin Blankertz, Gabriel Curio, and Klaus-Robert Müller - [Dataset IVa](https://www.bbci.de/competition/iii/desc_IVa.html)
 - Aristimunha, B., Carrara, I., Guetschel, P., Sedlar, S., Rodrigues, P., Sosulski, J., Narayanan, D., Bjareholt, E., Barthelemy, Q., Schirrmeister, R. T., Kobler, R., Kalunga, E., Darmet, L., Gregoire, C., Abdul Hussain, A., Gatti, R., Goncharenko, V., Thielen, J., Moreau, T., Roy, Y., Jayaram, V., Barachant, A., & Chevallier, S. (2025).
 Mother of all BCI Benchmarks (MOABB), 2025. DOI: 10.5281/zenodo.10034223.
