@@ -75,7 +75,7 @@ class BCIC2008_IVa(MNEBCIC):
         super().__init__(
             subjects=list(range(1, 6)),
             sessions_per_subject=1,
-            events={"right_hand": 1, "feet": 2},
+            events={"right_hand": 0, "feet": 1},
             code="BCIC2008-IVa",
             interval=[0, 3.5],
             paradigm="imagery",
@@ -195,18 +195,12 @@ def _load_data_iva_2008(
     # fmt: on
     ch_type = ["eeg"] * 118
 
-    filenames = []
-
     url = "{u}download/competition_iii/berlin/100Hz/data_set_IVa_{s}_mat.zip".format(
         u=base_url, s=subject_names[subject]
     )
     filename = data_path(url, path, force_update, update_path)
     raw, ev = _convert_mi(filename[0], ch_names, ch_type)
-    sessions = {
-        "0train": {
-            "0": raw
-        }
-    }
+    sessions = {"0train": {"0": raw}}
     return sessions
 
 
@@ -264,17 +258,40 @@ def _convert_run(run, ch_names, ch_types, verbose=None):
         event_id (dict):
             Dictionary containing class names.
     """
-    nfo = run["nfo"][0, 0]
-    sfreq = float(nfo["fs"][0, 0])
+    class_map = {
+        "right": "right_hand",
+        "foot": "feet",
+    }
+
+    raw_labels = run["mrk"]["y"][0, 0][0]
+    labels_mask = ~np.isnan(raw_labels)
+    valid_labels = raw_labels[labels_mask]
+    labels = valid_labels.astype(int) - 1
+
+    raw_positions = run["mrk"][0][0]["pos"][0]
+    positions = raw_positions[labels_mask]
+
+    sfreq = float(run["nfo"][0, 0]["fs"][0, 0])
     eeg_data = run["cnt"]
     raw_classes = run["mrk"]["className"]
 
     while isinstance(raw_classes, (list, np.ndarray)) and len(raw_classes) == 1:
         raw_classes = raw_classes[0]
-
     class_names = [cls[0] for cls in raw_classes]
-    event_id = {name: i + 1 for i, name in enumerate(class_names)}
+
+    for i, word in enumerate(class_names):
+        if word in class_map:
+            class_names[i] = class_map[word]
+
     info = create_info(ch_names=ch_names, ch_types=ch_types, sfreq=sfreq)
+
+    onset = positions / sfreq
+    duration = 0
+    description = [class_names[i] for i in labels]
+    annotations = Annotations(onset=onset, duration=duration, description=description)
+
+    event_id = {name: i for i, name in enumerate(class_names)}
     raw = RawArray(data=eeg_data.T, info=info, verbose=verbose)
+    raw.set_annotations(annotations)
 
     return raw, event_id
