@@ -174,7 +174,7 @@ def _load_data_iva_2008(
     if (subject < 1) or (subject > 5):
         raise ValueError(f"Subject must be between 1 and 5. Got {subject}")
 
-    subject_names = {1: "aa", 2: "al", 3: "av", 4: "aw", 5: "ay"}
+    subject_names = ["aa", "al", "av", "aw", "ay"]
 
     # fmt: off
     ch_names = ['Fp1', 'AFp1', 'Fpz', 'AFp2', 'Fp2', 'AF7', 'AF3',
@@ -195,12 +195,16 @@ def _load_data_iva_2008(
     # fmt: on
     ch_type = ["eeg"] * 118
 
-    url = "{u}download/competition_iii/berlin/100Hz/data_set_IVa_{s}_mat.zip".format(
-        u=base_url, s=subject_names[subject]
-    )
-    filename = data_path(url, path, force_update, update_path)
-    raw, ev = _convert_mi(filename[0], ch_names, ch_type)
-    sessions = {"0train": {"0": raw}}
+    sessions = {}
+    for session_idx, r in enumerate(subject_names):
+        url = "{u}download/competition_iii/berlin/100Hz/data_set_IVa_{r}_mat.zip".format(
+            u=base_url, r=r
+        )
+        filename = data_path(url, path, force_update, update_path)
+        runs, ev = _convert_mi(filename[0], ch_names, ch_type)
+        sessions[f"{session_idx}{'train'}"] = {
+            str(session_idx): runs
+        }
     return sessions
 
 
@@ -221,6 +225,7 @@ def _convert_mi(filename, ch_names, ch_type):
             returns MNE Raw object.
     """
     zip_path = Path(filename)
+    runs = []
 
     with zipfile.ZipFile(zip_path, "r") as z:
         mat_files = [f for f in z.namelist() if f.endswith(".mat")]
