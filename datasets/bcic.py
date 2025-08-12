@@ -197,14 +197,14 @@ def _load_data_iva_2008(
 
     sessions = {}
     for session_idx, r in enumerate(subject_names):
-        url = "{u}download/competition_iii/berlin/100Hz/data_set_IVa_{r}_mat.zip".format(
-            u=base_url, r=r
+        url = (
+            "{u}download/competition_iii/berlin/100Hz/data_set_IVa_{r}_mat.zip".format(
+                u=base_url, r=r
+            )
         )
         filename = data_path(url, path, force_update, update_path)
         runs, ev = _convert_mi(filename[0], ch_names, ch_type)
-        sessions[f"{session_idx}{'train'}"] = {
-            str(session_idx): runs
-        }
+        sessions[f"{session_idx}{'train'}"] = {str(session_idx): runs}
     return sessions
 
 
@@ -225,7 +225,6 @@ def _convert_mi(filename, ch_names, ch_type):
             returns MNE Raw object.
     """
     zip_path = Path(filename)
-    runs = []
 
     with zipfile.ZipFile(zip_path, "r") as z:
         mat_files = [f for f in z.namelist() if f.endswith(".mat")]
