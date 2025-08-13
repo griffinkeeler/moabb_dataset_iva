@@ -195,17 +195,15 @@ def _load_data_iva_2008(
     # fmt: on
     ch_type = ["eeg"] * 118
 
-    sessions = {}
-    for session_idx, r in enumerate(subject_names):
-        url = (
-            "{u}download/competition_iii/berlin/100Hz/data_set_IVa_{r}_mat.zip".format(
-                u=base_url, r=r
-            )
-        )
-        filename = data_path(url, path, force_update, update_path)
-        runs, ev = _convert_mi(filename[0], ch_names, ch_type)
-        sessions[f"{session_idx}{'train'}"] = {str(session_idx): runs}
-    return sessions
+    url = "{u}download/competition_iii/berlin/100Hz/data_set_IVa_{r}_mat.zip".format(
+        u=base_url, r=subject_names[subject - 1]
+    )
+
+    filename = data_path(url, path, force_update, update_path)
+    runs, ev = _convert_mi(filename[0], ch_names, ch_type)
+
+    session = {"0train": {"0": runs}}
+    return session
 
 
 def _convert_mi(filename, ch_names, ch_type):
@@ -299,3 +297,6 @@ def _convert_run(run, ch_names, ch_types, verbose=None):
     raw.set_annotations(annotations)
 
     return raw, event_id
+
+
+load_data(subject=1)
