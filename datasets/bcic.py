@@ -102,7 +102,8 @@ def load_data(
 
     This will fetch data for a given dataset.
 
-    Args:
+    Parameters
+    ----------
         subject (int):
             The subject to load.
         dataset (str):
@@ -127,7 +128,8 @@ def load_data(
             (see :func:`mne.verbose` and :ref:`Logging documentation
             <tut_logging>` for more).
 
-    Returns:
+    Returns
+    -------
         raws (list):
             List of raw instances for each non-consecutive recording.
             Depending on the dataset it could be a BCI run or a different
@@ -213,7 +215,8 @@ def _convert_mi(filename, ch_names, ch_type):
     """
     Process motor imagery data from MAT files.
 
-     Args:
+     Parameters
+     ----------
         filename (str):
             Path to the MAT file.
         ch_names (list of str):
@@ -221,7 +224,8 @@ def _convert_mi(filename, ch_names, ch_type):
         ch_type (list of str):
             List of channel types.
 
-    Returns:
+    Returns
+    -------
         raw (instance of RawArray):
             returns MNE Raw object.
     """
@@ -246,7 +250,8 @@ def _convert_run(run, ch_names, ch_types, verbose=None):
     """
     Converts one run to a raw MNE object.
 
-    Args:
+    Parameters
+    ----------
         run (ndarray):
             The continuous EEG signal.
         ch_names (list of str):
