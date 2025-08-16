@@ -9,8 +9,7 @@ from mne.utils import verbose
 from scipy.io import loadmat
 from pathlib import Path
 
-from datasets import download as dl
-
+from moabb.datasets import download as dl
 from moabb.datasets.base import BaseDataset
 
 
@@ -84,7 +83,7 @@ class BCIC2008_IVa(MNEBCIC):
 
 
 def data_path(url, path=None, force_update=False, update_path=None, verbose=None):
-    return [dl.data_dl(url, "BCIC", path, force_update, verbose)]
+    return [dl.data_dl(url, "BNCI", path, force_update, verbose)]
 
 
 @verbose
@@ -195,11 +194,18 @@ def _load_data_iva_2008(
     # fmt: on
     ch_type = ["eeg"] * 118
 
+    filenames = []
+
     url = "{u}download/competition_iii/berlin/100Hz/data_set_IVa_{r}_mat.zip".format(
         u=base_url, r=subject_names[subject - 1]
     )
 
     filename = data_path(url, path, force_update, update_path)
+    filenames += filename
+
+    if only_filenames:
+        return filenames
+
     runs, ev = _convert_mi(filename[0], ch_names, ch_type)
 
     session = {"0train": {"0": runs}}
@@ -297,6 +303,3 @@ def _convert_run(run, ch_names, ch_types, verbose=None):
     raw.set_annotations(annotations)
 
     return raw, event_id
-
-
-load_data(subject=1)
