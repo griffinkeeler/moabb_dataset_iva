@@ -37,7 +37,7 @@ class MNEBCIC(BaseDataset):
         )
 
 
-class BCIC2008_IVa(MNEBCIC):
+class BCICIII_IVa(MNEBCIC):
     """
     BCIC 2008-IVa Motor Imagery dataset.
 
